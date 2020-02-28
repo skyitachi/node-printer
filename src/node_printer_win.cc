@@ -504,7 +504,6 @@ MY_NODE_MODULE_CALLBACK(getDefaultPrinterName)
 MY_NODE_MODULE_CALLBACK(readPrinter)
 {
 
-    MY_NODE_MODULE_ISOLATE_DECL
     MY_NODE_MODULE_HANDLESCOPE;
     REQUIRE_ARGUMENTS(iArgs, 1);
     REQUIRE_ARGUMENT_STRINGW(iArgs, 0, printername);
@@ -518,7 +517,7 @@ MY_NODE_MODULE_CALLBACK(readPrinter)
     }
     char buf[128];
     DWORD read_length;
-    BOOL ret = ReadPrinterW(*printerHandle, buf, 128, &read_length);
+    BOOL ret = ReadPrinter(*printerHandle, buf, 128, &read_length);
     if (!ret) {
         std::string error_str("error on ReadPrinter: ");
         error_str += getLastErrorCodeAndMessage();
@@ -526,13 +525,13 @@ MY_NODE_MODULE_CALLBACK(readPrinter)
     }
     if (read_length >= 0) {
        v8::Local<v8::Object> ret;
-       if (node::Buffer::Copy(isolate, buf, read_length).ToLocal(&buf)) {
-           MY_NODE_MODULE_RETURN_VALUE(buf);
+       if (node::Buffer::Copy(isolate, buf, read_length).ToLocal(&ret)) {
+           MY_NODE_MODULE_RETURN_VALUE(ret);
        } else {
-           ETURN_EXCEPTION_STR("copy buffer failed");
+           RETURN_EXCEPTION_STR("copy buffer failed");
        }
     }
-    ETURN_EXCEPTION_STR("read printer data error");
+    RETURN_EXCEPTION_STR("read printer data error");
       
 }
 

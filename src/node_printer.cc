@@ -15,7 +15,7 @@ void initNode(v8::Local<v8::Object> exports) {
     MY_MODULE_SET_METHOD(exports, "getSupportedPrintFormats", getSupportedPrintFormats);
     MY_MODULE_SET_METHOD(exports, "getSupportedJobCommands", getSupportedJobCommands);
     // TODO: add readPrinter
-    MY_MODUEL_SET_METHOD(exports, "readPrinter", readPrinter);
+    MY_MODULE_SET_METHOD(exports, "readPrinter", readPrinter);
 }
 
 NODE_MODULE(node_printer, initNode);
